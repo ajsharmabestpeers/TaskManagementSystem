@@ -7,7 +7,16 @@ class User < ApplicationRecord
 
     has_many :projects
     has_many :tasks
+    # has_many :tasks, through: :projects
+
     enum role: %i[admin project_manager team_member]
+    def admin?
+      role == 'admin'
+    end
+  
+    def project_manager?
+      role == 'project_manager'
+    end
     
     after_initialize :set_default_role, if: :new_record?
   
