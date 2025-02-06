@@ -8,3 +8,15 @@ production:
   adapter: redis
   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
   channel_prefix: task_management_system_production
+
+development:
+  adapter: redis
+  url: redis://localhost:6379/1
+  channel_prefix: task_management_system_development
+
+production:
+  adapter: redis
+  url: redis://localhost:6379/1
+  channel_prefix: task_management_system_production
+  password: <%= ENV['REDIS_PASSWORD'] %>
+  ssl: true

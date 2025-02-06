@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   resources :projects
   resources :tasks
 
+   resources :notifications, only: [:create]
+   mount ActionCable.server => '/cable'
+
   # resources :users do
   #   get 'projects', to: 'users#show'
   # end
