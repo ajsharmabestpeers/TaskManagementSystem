@@ -25,6 +25,9 @@ gem "stimulus-rails"
 
 gem 'cancancan'
 gem 'rack-attack'
+gem 'actioncable'
+gem 'redis'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
