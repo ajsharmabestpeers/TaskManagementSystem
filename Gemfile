@@ -27,6 +27,8 @@ gem 'cancancan'
 gem 'rack-attack'
 gem 'actioncable'
 gem 'redis'
+gem 'jwt'
+gem 'bcrypt', '~> 3.1.7'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"

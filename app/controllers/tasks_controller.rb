@@ -1,5 +1,7 @@
 class TasksController < ApplicationController
-    
+  before_action :authorize_request, except: :create
+  before_action :set_task ,only: [:show , :update , :destroy]
+  
   def index
     @tasks = Task.all
     @tasks = @tasks.where(status: params[:status]) if params[:status].present?
@@ -26,10 +28,9 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     
     if @task.save
-      # Broadcast notification to assigned user if a user is assigned to the task
       if @task.user_id.present?
         ActionCable.server.broadcast(
-          "notification_#{@task.user_id}",  # Targeting the assigned user
+          "notification_#{@task.user_id}", 
           { message: "You have been assigned a new task: #{@task.name}" }
         )
       end

@@ -1,11 +1,16 @@
 class ProjectsController < ApplicationController
+  before_action :authorize_request, except: [:index, :show]
+  before_action :authorize_user, only: [:create] 
+  before_action :set_project ,only: [:show , :update , :destroy]
+  before_action :set_user, only: [:index]
 
   def index
-    render json: Project.all
+    # render json: Project.all
+    render json: @user.projects
   end
 
   def show
-    render json: @project, include: ['tasks']
+    render json: @project
   end
 
   def create
@@ -31,6 +36,10 @@ class ProjectsController < ApplicationController
 
   private
 
+  def set_user
+    @user = User.find(params[:user_id]) 
+  end
+
   def set_project
     @project = Project.find(params[:id])
   end
@@ -38,4 +47,12 @@ class ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(:name, :description, :user_id)
   end
+
+  def authorize_user
+
+    if !['admin', 'project_manager'].include?(@current_user.role)
+      render json: { error: 'Unauthorized' }, status: :forbidden
+    end
+  end
 end
+
