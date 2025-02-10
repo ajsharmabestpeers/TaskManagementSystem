@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
    resources :notifications, only: [:create]
    mount ActionCable.server => '/cable'
+   post 'tasks', to: 'tasks#create'
 
   # resources :users do
   #   get 'projects', to: 'users#show'

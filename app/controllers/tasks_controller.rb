@@ -13,14 +13,33 @@ class TasksController < ApplicationController
     render json: @task
   end
 
+  # def create
+  #   @task = Task.new(task_params)
+  #   if @task.save
+  #     render json: @task, status: :created
+  #   else
+  #     render json: @task.errors, status: :unprocessable_entity
+  #   end
+  # end
+
   def create
     @task = Task.new(task_params)
+    
     if @task.save
+      # Broadcast notification to assigned user if a user is assigned to the task
+      if @task.user_id.present?
+        ActionCable.server.broadcast(
+          "notification_#{@task.user_id}",  # Targeting the assigned user
+          { message: "You have been assigned a new task: #{@task.name}" }
+        )
+      end
+
       render json: @task, status: :created
     else
       render json: @task.errors, status: :unprocessable_entity
     end
   end
+
 
   def update
     if @task.update(task_params)
