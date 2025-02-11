@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authorize_request, except: :create
   before_action :set_user ,only: [:show , :update , :destroy]
+  load_and_authorize_resource
   # before_action :find_user, except: %i[create index]
 
   def index

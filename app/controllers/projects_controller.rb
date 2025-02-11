@@ -3,6 +3,7 @@ class ProjectsController < ApplicationController
   before_action :authorize_user, only: [:create] 
   before_action :set_project ,only: [:show , :update , :destroy]
   before_action :set_user, only: [:index]
+  load_and_authorize_resource
 
   def index
     # render json: Project.all
@@ -15,6 +16,7 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
+    @project.user_id = @current_user.id
     if @project.save
       render json: @project, status: :created
     else
@@ -54,5 +56,6 @@ class ProjectsController < ApplicationController
       render json: { error: 'Unauthorized' }, status: :forbidden
     end
   end
+  
 end
 
